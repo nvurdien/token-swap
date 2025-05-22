@@ -1,45 +1,27 @@
 # cloudbuild.yaml
 steps:
-# Build Docker image
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/$PROJECT_ID/token-swap:$COMMIT_SHA', '.']
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/token-swap:latest', '.']
 
-# Push to Artifact Registry
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/$PROJECT_ID/token-swap:$COMMIT_SHA']
+  args: ['push', 'gcr.io/$PROJECT_ID/token-swap:latest']
 
-# Deploy to Cloud Run with secrets
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: bash
-  args:
-    - '-c'
-    - |
-      gcloud run deploy token-swap \
-        --image=gcr.io/$PROJECT_ID/token-swap:$COMMIT_SHA \
-        --platform=managed \
-        --region=us-central1 \
-        --allow-unauthenticated \
-        --port=8080 \
-        --update-secrets=FUN_API_KEY=FUN_API_KEY:latest
+  args: 
+  - 'gcloud'
+  - 'run'
+  - 'deploy'
+  - 'token-swap'
+  - '--image=gcr.io/$PROJECT_ID/token-swap:latest'
+  - '--platform=managed'
+  - '--region=us-central1'
+  - '--allow-unauthenticated'
+  - '--port=8080'
+  - '--update-secrets=FUN_API_KEY=FUN_API_KEY:latest'
+
 
 # Optional: Cleanup old images
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   args: ['gcloud', 'container', 'images', 'delete',
-         'gcr.io/$PROJECT_ID/token-swap:$COMMIT_SHA',
+         'gcr.io/$PROJECT_ID/token-swap:latest',
          '--quiet', '--force-delete-tags']
-
-# IAM permissions for secrets (run once)
-# Uncomment these if first time setup
-# - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-#   args: ['gcloud', 'secrets', 'add-iam-policy-binding', 'FUN_API_KEY',
-#          '--member=serviceAccount:$PROJECT_NUMBER@cloudbuild.gserviceaccount.com',
-#          '--role=roles/secretmanager.secretAccessor']
-
-options:
-  logging: CLOUD_LOGGING_ONLY
-
-substitutions:
-  _PROJECT_ID: 'token-swap-460605'  # Set in trigger config
-  _REGION: 'us-central1'              # Set in trigger config
-
-timeout: 1800s
