@@ -17,4 +17,5 @@ steps:
   - '--region=us-central1'
   - '--allow-unauthenticated'
   - '--port=8080'
-  - '--set-env-vars=NEXT_PUBLIC_FUN_API_KEY=${_FUN_API_KEY}'
+  - '--set-env-vars=FUN_API_KEY=${_FUN_API_KEY}'
+  - '--update-secrets=FUN_API_KEY=FUN_API_KEY:latest'
