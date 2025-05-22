@@ -15,7 +15,7 @@ export async function GET(request: Request) {
     return NextResponse.json(priceData);
   } catch (error) {
     return NextResponse.json(
-      { error: "Failed to fetch token price" },
+      { error: `Failed to fetch token price: ${error}` },
       { status: 500 }
     );
   }

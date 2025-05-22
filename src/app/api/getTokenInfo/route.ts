@@ -15,7 +15,7 @@ export async function GET(request: Request) {
     return NextResponse.json(tokenInfo);
   } catch (error) {
     return NextResponse.json(
-      { error: "Failed to fetch token info" },
+      { error: `Failed to fetch token info: ${error}` },
       { status: 500 }
     );
   }

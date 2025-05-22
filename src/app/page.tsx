@@ -6,8 +6,6 @@ import { TokenChip } from '@/components/TokenChip';
 import { Token } from '../app/types';
 import { useEffect, useState } from 'react';
 
-const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-
 export default function SwapPage() {
   const [tokens, setTokens] = useState<Token[]>([]);
   const [sourceToken, setSourceToken] = useState<Token | null>(null);
@@ -42,12 +40,12 @@ export default function SwapPage() {
       try {
         const tokenInfoResponses = await Promise.all(
           initialTokens.map(token =>
-            fetch(`${baseUrl}/api/getTokenInfo?chainId=${token.chainId}&symbol=${token.symbol}`)
+            fetch(`/api/getTokenInfo?chainId=${token.chainId}&symbol=${token.symbol}`)
           ));
         const tokensData = await Promise.all(tokenInfoResponses.map(res => res.json()));
 
         const tokenPriceResponses = await Promise.all(
-          initialTokens.map((token, index) => fetch(`${baseUrl}/api/getTokenPrice?chainId=${token.chainId}&address=${tokensData[index].address}`))
+          initialTokens.map((token, index) => fetch(`/api/getTokenPrice?chainId=${token.chainId}&address=${tokensData[index].address}`))
           );
         const tokensPriceData = await Promise.all(tokenPriceResponses.map(res => res.json()));
         

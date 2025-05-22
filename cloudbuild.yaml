@@ -1,0 +1,20 @@
+# cloudbuild.yaml
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/token-swap:latest', '.']
+
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/$PROJECT_ID/token-swap:latest']
+
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  args: 
+  - 'gcloud'
+  - 'run'
+  - 'deploy'
+  - 'token-swap'
+  - '--image=gcr.io/$PROJECT_ID/token-swap:latest'
+  - '--platform=managed'
+  - '--region=us-central1'
+  - '--allow-unauthenticated'
+  - '--port=8080'
+  - '--set-env-vars=NEXT_PUBLIC_FUN_API_KEY=${_FUN_API_KEY}'

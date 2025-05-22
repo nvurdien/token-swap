@@ -2,7 +2,7 @@
 
 A modern web interface for comparing cryptocurrency values, featuring drag-and-drop token selection and real-time price calculations.
 
-[![Live Demo](https://img.shields.io/badge/demo-vercel-blue?style=flat-square)](https://your-vercel-app.vercel.app)
+[![Live Demo](https://token-swap-48943248174.us-central1.run.app)](https://token-swap-48943248174.us-central1.run.app)
 
 ![Swap Interface Preview](./public/demo.png)
 
@@ -16,7 +16,7 @@ A modern web interface for comparing cryptocurrency values, featuring drag-and-d
 - **Frontend**: Next.js 14, React 18, TypeScript
 - **Styling**: Tailwind CSS
 - **API**: Fun.xyz Crypto API
-- **Deployment**: Firebase
+- **Deployment**: Cloud Run
 
 ## Getting Started 🚀
 
